@@ -76,6 +76,7 @@ au BufRead, BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
 set nu
 set clipboard=unnamed
+set mouse=n
 
 " Automcomplete
 let g:ycm_autoclose_preview_window_after_completion=1
