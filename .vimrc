@@ -25,6 +25,7 @@ Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'scrooloose/nerdcommenter'
 
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -77,6 +78,7 @@ set encoding=utf-8
 set nu
 set clipboard=unnamed
 set mouse=n
+set backspace=indent,eol,start
 
 " Automcomplete
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -116,3 +118,4 @@ map <leader>n :call RenameFile()<cr>
 " BufExplorer configuration
 nmap <script> <silent> <unique> <Leader><Leader> :BufExplorer<CR>
 let g:bufExplorerShowRelativePath=1
+
