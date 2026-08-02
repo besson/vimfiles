@@ -1,3 +1,10 @@
 .vim/bundle/*
 .vim/.netrwhist
 bundle
+
+# vim-plug plugin installs
+autoload/
+plugged/
+
+# local backups
+.vimrc.bak.*

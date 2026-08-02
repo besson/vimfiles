@@ -1,39 +1,44 @@
-
 let mapleader=","
 
 set nocompatible              " required
-filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PLUGINS (vim-plug)
+" Install/update with :PlugInstall / :PlugUpdate  |  Clean with :PlugClean
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.vim/plugged')
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" File explorer
+Plug 'preservim/nerdtree'
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+" Colorschemes
+Plug 'altercation/vim-colors-solarized'
+Plug 'NLKNguyen/papercolor-theme'
 
-" Plugins
-Plugin 'scrooloose/nerdtree'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'kien/ctrlp.vim'
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'scrooloose/nerdcommenter'
+" Linting / diagnostics (async replacement for syntastic + vim-flake8)
+Plug 'dense-analysis/ale'
 
-" add all your plugins here (note older versions of Vundle
-" used Bundle instead of Plugin)
+" Folding for Python
+Plug 'tmhedberg/SimpylFold'
 
-" ...
+" Fuzzy finder (replaces ctrlp)
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+" Statusline (replaces powerline)
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" Buffer explorer
+Plug 'jlanzarotta/bufexplorer'
+
+" Commenting
+Plug 'preservim/nerdcommenter'
+
+call plug#end()
+
 filetype plugin indent on    " required
+syntax enable
 
 set splitbelow
 set splitright
@@ -64,33 +69,62 @@ au BufNewFile,BufRead *.py
     \ set autoindent |
     \ set fileformat=unix
 
-
-au BufNewFile,BufRead *.js, *.html, *.css
-    \ set tabstop=2 | 
+au BufNewFile,BufRead *.js,*.html,*.css
+    \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2
 
-au BufRead, BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-" general configsj
+" general configs
 set encoding=utf-8
-set nu
+set number
 set clipboard=unnamed
-set mouse=n
+set mouse=a
 set backspace=indent,eol,start
 
-" Automcomplete
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" QoL settings
+set scrolloff=4
+set wildmenu
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set signcolumn=yes
+
+" Persistent undo
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undo//
+endif
+
+" ALE (linting) config
+let g:ale_linters = {'python': ['flake8', 'pylsp']}
+let g:ale_fix_on_save = 0
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+" Use ALE as omnicompletion source (<C-x><C-o>)
+set omnifunc=ale#completion#OmniFunc
+" Jump to definition / references via ALE's LSP
+nnoremap <leader>g :ALEGoToDefinition<CR>
+nnoremap <leader>r :ALEFindReferences<CR>
+nnoremap K :ALEHover<CR>
 
 let python_highlight_all=1
-syntax on
 
 set t_Co=256
 colorscheme PaperColor
 
+" airline config
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+" fzf mappings (replaces ctrlp <C-p>)
+nnoremap <C-p> :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>f :Rg<CR>
+
 " Nerd tree config
-autocmd vimenter * NERDTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
@@ -114,7 +148,5 @@ endfunction
 map <leader>n :call RenameFile()<cr>
 
 " Bufexplorer config
-" BufExplorer configuration
 nmap <script> <silent> <unique> <Leader><Leader> :BufExplorer<CR>
 let g:bufExplorerShowRelativePath=1
-
