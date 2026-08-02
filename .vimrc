@@ -5,7 +5,15 @@ set nocompatible              " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS (vim-plug)
 " Install/update with :PlugInstall / :PlugUpdate  |  Clean with :PlugClean
+" (Auto-installs vim-plug + all plugins on first launch — see snippet below)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Auto-install vim-plug on first launch if missing
+let s:plug_path = expand('~/.vim/autoload/plug.vim')
+if empty(glob(s:plug_path))
+  silent execute '!curl -fLo '.s:plug_path.' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
 " File explorer
