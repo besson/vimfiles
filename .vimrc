@@ -121,7 +121,19 @@ nnoremap K :ALEHover<CR>
 let python_highlight_all=1
 
 set t_Co=256
+if has('termguicolors')
+  set termguicolors
+endif
+set background=dark
 colorscheme PaperColor
+
+" Match pi's background: let Ghostty's terminal background show through
+" (pi does not paint its own background either)
+hi Normal      guibg=NONE ctermbg=NONE
+hi NonText     guibg=NONE ctermbg=NONE
+hi LineNr      guibg=NONE ctermbg=NONE
+hi SignColumn  guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
 
 " airline config
 let g:airline_powerline_fonts = 1
