@@ -43,6 +43,9 @@ Plug 'jlanzarotta/bufexplorer'
 " Commenting
 Plug 'preservim/nerdcommenter'
 
+" Markdown live preview (renders in browser, updates as you type)
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install', 'for': ['markdown'] }
+
 call plug#end()
 
 filetype plugin indent on    " required
@@ -152,6 +155,10 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd VimEnter * if argc() >= 1 && !isdirectory(argv()[0]) && !exists("s:std_in") | NERDTree | wincmd p | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
+
+" Markdown preview toggle (only active in markdown buffers)
+autocmd FileType markdown nnoremap <buffer> <leader>md :MarkdownPreviewToggle<CR>
+let g:mkdp_auto_close = 1
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
